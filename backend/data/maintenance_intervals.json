@@ -169,6 +169,30 @@
           "generalist": { "min": 60, "max": 80 },
           "premium": { "min": 60, "max": 80 }
         }
+      },
+      "annual_service": {
+        "name": "Entretien annuel",
+        "km_interval": null,
+        "months_interval": 12,
+        "forecasted": true,
+        "note": "Contrôle annuel simplifié, effectué si l'intervalle kilométrique de révision n'a pas été atteint. Plus léger qu'une révision complète.",
+        "prices": {
+          "accessible": { "min": 80, "max": 130 },
+          "generalist": { "min": 100, "max": 180 },
+          "premium": { "min": 150, "max": 280 }
+        }
+      },
+      "fluid_level_check": {
+        "name": "Vérification des niveaux (huile, frein, liquide de refroidissement)",
+        "km_interval": null,
+        "months_interval": 3,
+        "forecasted": true,
+        "note": "Contrôle régulier des niveaux de liquides. À effectuer tous les 3 mois.",
+        "prices": {
+          "accessible": { "min": 0, "max": 0 },
+          "generalist": { "min": 0, "max": 0 },
+          "premium": { "min": 0, "max": 0 }
+        }
       }
     },
 
