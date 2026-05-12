@@ -129,6 +129,9 @@ INTERVENTION_TRANSLATIONS = {
     # Fuel filter (motorization-specific)
     "Remplacement filtre à gasoil": "fuel_filter_diesel",
     "Remplacement filtre à essence": "fuel_filter_gasoline",
+
+    # Fluid level check
+    "Vérification des niveaux (huile, frein, liquide de refroidissement)": "fluid_level_check",
 }
 
 # ✋ Consommables: Excluded from "À venir" forecast because too variable

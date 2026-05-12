@@ -297,11 +297,30 @@ function IntervalEditModal({ vehicleId, item, onClose, onSaved }) {
 export default React.memo(function UpcomingMaintenance({ data, vehicleId, onRefresh }) {
   const { upcoming } = data;
   const [editingItem, setEditingItem] = useState(null);
+  const [performingCheck, setPerformingCheck] = useState(null);
 
   const handleSaved = useCallback(() => {
     setEditingItem(null);
     onRefresh?.();
   }, [onRefresh]);
+
+  const handlePerformCheck = useCallback(async (item) => {
+    setPerformingCheck(item.intervention_key);
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      await api.createMaintenance(vehicleId, {
+        intervention_type: item.intervention_type,
+        execution_date: today,
+        cost: 0,
+        notes: 'Vérification effectuée via le bouton "Effectuer"',
+      });
+      onRefresh?.();
+    } catch (e) {
+      console.error('Erreur lors de l\'enregistrement:', e);
+    } finally {
+      setPerformingCheck(null);
+    }
+  }, [vehicleId, onRefresh]);
 
   if (!upcoming || upcoming.length === 0) {
     return (
@@ -418,6 +437,23 @@ export default React.memo(function UpcomingMaintenance({ data, vehicleId, onRefr
                       }}
                     >
                       ✏️
+                    </button>
+                  )}
+
+                  {/* Bouton Effectuer — uniquement pour la vérification des niveaux */}
+                  {item.intervention_key === 'fluid_level_check' && (
+                    <button
+                      onClick={() => handlePerformCheck(item)}
+                      disabled={performingCheck === item.intervention_key}
+                      className="btn btn-primary"
+                      style={{
+                        fontSize: '0.82rem',
+                        padding: '0.4rem 0.8rem',
+                        minWidth: 90,
+                        opacity: performingCheck === item.intervention_key ? 0.6 : 1,
+                      }}
+                    >
+                      {performingCheck === item.intervention_key ? '⏳...' : '✓ Effectuer'}
                     </button>
                   )}
                 </div>

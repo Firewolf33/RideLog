@@ -402,6 +402,17 @@
             "generalist": { "min": 50, "max": 80 },
             "premium": { "min": 50, "max": 80 }
           }
+        },
+        "fluid_level_check": {
+          "name": "Vérification des niveaux (huile, frein, liquide de refroidissement)",
+          "km_interval": null,
+          "months_interval": 3,
+          "note": "Contrôle régulier des niveaux de liquides. À effectuer tous les 3 mois.",
+          "prices": {
+            "accessible": { "min": 0, "max": 0 },
+            "generalist": { "min": 0, "max": 0 },
+            "premium": { "min": 0, "max": 0 }
+          }
         }
       },
 
