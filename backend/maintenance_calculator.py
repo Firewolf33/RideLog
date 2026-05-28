@@ -350,11 +350,29 @@ class MaintenanceCalculator:
         km_finite = km_remaining != float('inf')
         days_finite = days_remaining != float('inf')
 
+        # Seuils proportionnels a l'intervalle (plafonnés aux valeurs max)
+        # Pour les intervalles courts (ex: 3 mois), les seuils fixes (7j/90j)
+        # faisaient passer l'item en "warning" des l'enregistrement.
+        # Ratio : urgent = 10% de l'intervalle, warning = 30%
+        days_urgent_max = 7
+        days_warning_max = 90
+        km_urgent_max = 300
+        km_warning_max = 1500
+
+        if days_finite and months_interval is not None:
+            total_days_est = months_interval * 30.44
+            days_urgent_max = min(days_urgent_max, max(1, round(total_days_est * 0.10)))
+            days_warning_max = min(days_warning_max, max(3, round(total_days_est * 0.30)))
+
+        if km_finite and km_interval is not None:
+            km_urgent_max = min(km_urgent_max, max(50, round(km_interval * 0.10)))
+            km_warning_max = min(km_warning_max, max(500, round(km_interval * 0.30)))
+
         if (km_finite and km_remaining < 0) or (days_finite and days_remaining < 0):
             status = "overdue"
-        elif (km_finite and km_remaining <= 300) or (days_finite and days_remaining <= 7):
+        elif (km_finite and km_remaining <= km_urgent_max) or (days_finite and days_remaining <= days_urgent_max):
             status = "urgent"
-        elif (km_finite and km_remaining <= 1500) or (days_finite and days_remaining <= 90):
+        elif (km_finite and km_remaining <= km_warning_max) or (days_finite and days_remaining <= days_warning_max):
             status = "warning"
         else:
             status = "ok"
